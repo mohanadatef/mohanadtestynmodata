@@ -31,11 +31,13 @@ class Testcontroller extends Controller
                 }
             }
             if (isset($request->min_price) && !empty($request->min_price) && isset($request->max_price) && !empty($request->max_price) && $request->max_price > $request->min_price) {
-                if ($data['price'] >= $request->min_price && $data['price'] <= $request->max_price) {
+                //if (($data['price'] >= $request->min_price) && ($data['price'] <= $request->max_price)) {
+                if ($data['price'] >= $request->min_price) {
                     continue;
                 } else {
                     unset($arr[$keys]);
                 }
+
             }
         }
         if (isset($request->sort) && !empty($request->sort)) {
