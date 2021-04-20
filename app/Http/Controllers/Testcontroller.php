@@ -17,22 +17,17 @@ class Testcontroller extends Controller
         $arr = $response['data'];
         foreach ($arr as $keys => $data) {
             if (isset($request->name) && !empty($request->name)) {
-                if (strpos(strtolower($request->name), strtolower($data['name'])) !== false) {
-                    continue;
-                } else {
+                if (strtolower($request->name) != strtolower($data['name'])) {
                     unset($arr[$keys]);
                 }
             }
             if (isset($request->city) && !empty($request->city)) {
-                if (strpos(strtolower($request->city), strtolower($data['city'])) !== false) {
-                    continue;
-                } else {
+                if (strtolower($request->city) != strtolower($data['city'])) {
                     unset($arr[$keys]);
                 }
             }
             if (isset($request->min_price) && !empty($request->min_price) && isset($request->max_price) && !empty($request->max_price) && $request->max_price > $request->min_price) {
-                //if (($data['price'] >= $request->min_price) && ($data['price'] <= $request->max_price)) {
-                if ($data['price'] >= $request->min_price) {
+                if (($data['price'] >= intval($request->min_price)) && ($data['price'] <= intval($request->max_price))) {
                     continue;
                 } else {
                     unset($arr[$keys]);
@@ -43,15 +38,13 @@ class Testcontroller extends Controller
         if (isset($request->sort) && !empty($request->sort)) {
             if ($request->sort == 'name') {
                 $column_sort = array_column($arr, 'name');
-                array_multisort($column_sort, SORT_ASC, SORT_REGULAR, $arr);
             }
             if ($request->sort == 'price') {
                 $column_sort = array_column($arr, 'price');
-                array_multisort($column_sort, SORT_ASC, SORT_REGULAR, $arr);
             }
+            array_multisort($column_sort, SORT_ASC, SORT_REGULAR, $arr);
         }
         return $arr;
-
     }
 
 }
